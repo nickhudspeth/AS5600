@@ -41,6 +41,28 @@ HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a)
     HAL_StatusTypeDef status = HAL_OK;
     uint8_t pwm = 0;
     uint8_t mag_status = 0;
+    /* Set configuration defaults for uninitialized values. */
+    if(!(a->LowPowerMode)){
+        a->LowPowerMode = AS5600_POWER_MODE_DEFAULT;
+    }
+    if(!(a->Hysteresis)){
+        a->Hysteresis = AS5600_HYSTERESIS_DEFAULT;
+    }
+    if(!(a->OutputMode)){
+        a->OutputMode = AS5600_OUTPUT_STAGE_DEFAULT;
+    }
+    if(!(a->PWMFrequency)){
+        a->PWMFrequency = AS5600_PWM_FREQUENCY_DEFAULT;
+    }
+    if(!(a->SlowFilter)){
+        a->SlowFilter = AS5600_SLOW_FILTER_DEFAULT;
+    }
+    if(!(a->FastFilterThreshold)){
+        a->FastFilterThreshold = AS5600_FAST_FILTER_DEFAULT;
+    }
+    if(!(a->WatchdogTimer)){
+        a->WatchdogTimer = AS5600_WATCHDOG_DEFAULT;
+    }
     /* Write configuration settings.
        Do this in single write instead of using functions below to avoid
        overhead of multiple calls to HAL_I2C_Mem_Write_IT */
@@ -230,12 +252,11 @@ HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *a, uint16_t pos)
+HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *const a, const uint16_t pos)
 {
     HAL_StatusTypeDef status = HAL_OK;
-    pos &= AS5600_12_BIT_MASK; /* Zero out upper four bits of argument */
     uint8_t data[2] = {0};
-    data[0] = (uint8_t)(pos >> 8);
+    data[0] = (uint8_t)((pos & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)pos;
     if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_ZPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
     {
@@ -245,12 +266,11 @@ HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *a, uint16_t pos)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *a, uint16_t pos)
+HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *const a, const uint16_t pos)
 {
     HAL_StatusTypeDef status = HAL_OK;
-    pos &= AS5600_12_BIT_MASK; /* Zero out upper four bits of argument */
     uint8_t data[2] = {0};
-    data[0] = (uint8_t)(pos >> 8);
+    data[0] = (uint8_t)((pos & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)pos;
     if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
     {
@@ -260,12 +280,11 @@ HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *a, uint16_t pos)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *a, uint16_t angle)
+HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *const a, const uint16_t angle)
 {
     HAL_StatusTypeDef status = HAL_OK;
-    angle &= AS5600_12_BIT_MASK; /* Zero out upper four bits of argument */
     uint8_t data[2] = {0};
-    data[0] = (uint8_t)(angle >> 8);
+    data[0] = (uint8_t)((angle & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)angle;
     if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MANG_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
     {
@@ -275,7 +294,7 @@ HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *a, uint16_t angle)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetPositiveRotationDirection(AS5600_TypeDef *a, uint8_t dir)
+HAL_StatusTypeDef AS5600_SetPositiveRotationDirection(AS5600_TypeDef *const a, const uint8_t dir)
 {
     HAL_StatusTypeDef status = HAL_OK;
     if (dir == AS5600_DIR_CW)
@@ -294,7 +313,7 @@ HAL_StatusTypeDef AS5600_SetPositiveRotationDirection(AS5600_TypeDef *a, uint8_t
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetLowPowerMode(AS5600_TypeDef *a, uint8_t mode)
+HAL_StatusTypeDef AS5600_SetLowPowerMode(AS5600_TypeDef *const a, const uint8_t mode)
 {
     HAL_StatusTypeDef status = HAL_OK;
     switch (mode)
@@ -326,7 +345,7 @@ HAL_StatusTypeDef AS5600_SetLowPowerMode(AS5600_TypeDef *a, uint8_t mode)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetHysteresis(AS5600_TypeDef *a, uint8_t hysteresis)
+HAL_StatusTypeDef AS5600_SetHysteresis(AS5600_TypeDef *const a, const uint8_t hysteresis)
 {
     HAL_StatusTypeDef status = HAL_OK;
     switch (hysteresis)
@@ -358,7 +377,7 @@ HAL_StatusTypeDef AS5600_SetHysteresis(AS5600_TypeDef *a, uint8_t hysteresis)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetOutputMode(AS5600_TypeDef *a, uint8_t mode, uint8_t freq)
+HAL_StatusTypeDef AS5600_SetOutputMode(AS5600_TypeDef *const a, const uint8_t mode, uint8_t freq)
 {
     HAL_StatusTypeDef status = HAL_OK;
     uint8_t pwm = 0;
@@ -413,7 +432,7 @@ HAL_StatusTypeDef AS5600_SetOutputMode(AS5600_TypeDef *a, uint8_t mode, uint8_t 
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetSlowFilter(AS5600_TypeDef *a, uint8_t mode)
+HAL_StatusTypeDef AS5600_SetSlowFilter(AS5600_TypeDef *const a, const uint8_t mode)
 {
     HAL_StatusTypeDef status = HAL_OK;
     switch (mode)
@@ -445,7 +464,7 @@ HAL_StatusTypeDef AS5600_SetSlowFilter(AS5600_TypeDef *a, uint8_t mode)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *a, uint8_t threshold)
+HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *const a, const uint8_t threshold)
 {
     HAL_StatusTypeDef status = HAL_OK;
     switch (threshold)
@@ -493,7 +512,7 @@ HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *a, uint8_t thres
     return status;
 }
 
-HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *a, uint8_t mode)
+HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *const a, const uint8_t mode)
 {
     HAL_StatusTypeDef status = HAL_OK;
     switch (mode)
@@ -517,7 +536,7 @@ HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *a, uint8_t mode)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *a, uint16_t *angle)
+HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *const a, uint16_t *const angle)
 {
     HAL_StatusTypeDef status = HAL_OK;
     uint8_t data[2] = {0};
@@ -529,7 +548,7 @@ HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *a, uint16_t *angle)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *a, uint16_t *angle)
+HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a, uint16_t *const angle)
 {
     HAL_StatusTypeDef status = HAL_OK;
     uint8_t data[2] = {0};
@@ -542,7 +561,7 @@ HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *a, uint16_t *angle)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *a, uint8_t *stat)
+HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *const a, uint8_t *const stat)
 {
     HAL_StatusTypeDef status = HAL_OK;
     if (HAL_I2C_Mem_Read_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_STATUS, I2C_MEMADD_SIZE_8BIT, stat, 1) != HAL_OK)
@@ -553,7 +572,7 @@ HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *a, uint8_t *stat)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *a, uint8_t *agc)
+HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *const a, uint8_t *const agc)
 {
     HAL_StatusTypeDef status = HAL_OK;
     if (HAL_I2C_Mem_Read_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_AGC, I2C_MEMADD_SIZE_8BIT, agc, 1) != HAL_OK)
@@ -563,7 +582,7 @@ HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *a, uint8_t *agc)
     return status;
 }
 
-HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *a, uint16_t *mag)
+HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *const a, uint16_t *const mag)
 {
     HAL_StatusTypeDef status = HAL_OK;
     uint8_t data[2] = {0};

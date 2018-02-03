@@ -139,23 +139,23 @@ typedef struct
 /***********************    FUNCTION PROTOTYPES    ***********************/
 HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a);
 
-HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *a, uint16_t pos);
-HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *a, uint16_t pos);
-HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *a, uint16_t angle);
+HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *const a, const uint16_t pos);
+HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *const a, const uint16_t pos);
+HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *const a, const uint16_t angle);
 
-HAL_StatusTypeDef AS5600_SetPositiveRotationDirection(AS5600_TypeDef *a, uint8_t dir);
+HAL_StatusTypeDef AS5600_SetPositiveRotationDirection(AS5600_TypeDef *const a, const uint8_t dir);
 
-HAL_StatusTypeDef AS5600_SetLowPowerMode(AS5600_TypeDef *a, uint8_t mode);
-HAL_StatusTypeDef AS5600_SetHysteresis(AS5600_TypeDef *a, uint8_t hysteresis);
-HAL_StatusTypeDef AS5600_SetOutputMode(AS5600_TypeDef *a, uint8_t mode, uint8_t freq);
-HAL_StatusTypeDef AS5600_SetSlowFilter(AS5600_TypeDef *a, uint8_t mode);
-HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *a, uint8_t threshold);
-HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *a, uint8_t mode);
+HAL_StatusTypeDef AS5600_SetLowPowerMode(AS5600_TypeDef *const a, const uint8_t mode);
+HAL_StatusTypeDef AS5600_SetHysteresis(AS5600_TypeDef *const a, const uint8_t hysteresis);
+HAL_StatusTypeDef AS5600_SetOutputMode(AS5600_TypeDef *const a, const uint8_t mode, uint8_t freq);
+HAL_StatusTypeDef AS5600_SetSlowFilter(AS5600_TypeDef *const a, const uint8_t mode);
+HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *const a, const uint8_t threshold);
+HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *const a, const uint8_t mode);
 
-HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *a, uint16_t *angle);
-HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *a, uint16_t *angle);
-HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *a, uint8_t *stat);
-HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *a, uint8_t *agc);
-HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *a, uint16_t *mag);
+HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *const a, uint16_t *const angle);
+HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a,  uint16_t * const angle);
+HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *const a, uint8_t *const stat);
+HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *const a, uint8_t *const agc);
+HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *const a,  uint16_t *const mag);
 
 #endif /* AS5600_H_ */
