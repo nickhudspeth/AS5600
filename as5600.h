@@ -11,10 +11,32 @@ DESCRIPTION:
 
 
 USAGE:
+	// Instantiate an AS5600 structure
+	AS5600_TypeDef *a;
+
+    // Configure non-default options, if required.
+    a->PositiveRotationDirection = AS5600_DIR_CCW
+	a->LowPowerMode = AS5600_POWER_MODE_LPM2;
+    a->OutputStage = AS5600_OUTPUT_STAGE_PWM;
+    a->PWMFrequency = AS5600_PWM_FREQUENCY_460HZ;
+    a->Watchdog = AS5600_WATCHDOG_OFF;
+
+    // Initialize AS5600 with selected options and check for initialization errors.
+    if(AS5600_Init(a) != HAL_OK){
+        _Error_Handler(__FILE__, __LINE__);
+    }
+
+    // Read angular measurements
+    uint16_t angle = 0;
+    while(1){
+        AS5600_GetAngle(a, &angle);
+        printf("Angle = %ld degrees.\n", angle);
+    }
 
 NOTES:
-    Driver does not support permanent writing of registers using OTP burn commands.
-    Driver does not support angle measurement using AS5600 in PWM output mode.
+    Driver does not currently support permanent writing of registers using OTP burn commands.
+    Driver does not currently support angle measurement using ADC.
+    Driver does not currently support angle measurement using AS5600 in PWM output mode.
 
 TO-DO:
 
@@ -113,8 +135,8 @@ LICENSE:
 #define AS5600_AGC_MAX_GAIN_OVERFLOW (uint8_t)(1UL << 4) /*Error bit indicates b-field is too weak */
 #define AS5600_MAGNET_DETECTED (uint8_t)(1UL << 5)       /*Status bit indicates b-field is detected */
 
-#define AS5600_DIR_CW 0
-#define AS5600_DIR_CCW 1
+#define AS5600_DIR_CW 1
+#define AS5600_DIR_CCW 2
 
 #define AS5600_12_BIT_MASK (uint16_t)4095
 typedef struct
@@ -153,9 +175,9 @@ HAL_StatusTypeDef AS5600_SetFastFilterThreshold(AS5600_TypeDef *const a, const u
 HAL_StatusTypeDef AS5600_SetWatchdogTimer(AS5600_TypeDef *const a, const uint8_t mode);
 
 HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *const a, uint16_t *const angle);
-HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a,  uint16_t * const angle);
+HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a, uint16_t *const angle);
 HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *const a, uint8_t *const stat);
 HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *const a, uint8_t *const agc);
-HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *const a,  uint16_t *const mag);
+HAL_StatusTypeDef AS5600_GetCORDICMagnitude(AS5600_TypeDef *const a, uint16_t *const mag);
 
 #endif /* AS5600_H_ */

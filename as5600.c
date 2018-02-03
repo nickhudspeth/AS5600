@@ -42,6 +42,9 @@ HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a)
     uint8_t pwm = 0;
     uint8_t mag_status = 0;
     /* Set configuration defaults for uninitialized values. */
+    if(!(a->PositiveRotationDirection)){
+        a->PositiveRotationDirection = AS5600_DIR_CW;
+    }
     if(!(a->LowPowerMode)){
         a->LowPowerMode = AS5600_POWER_MODE_DEFAULT;
     }
