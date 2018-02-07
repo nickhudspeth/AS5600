@@ -261,7 +261,7 @@ HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *const a, const uint16_
     uint8_t data[2] = {0};
     data[0] = (uint8_t)((pos & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)pos;
-    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_ZPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
+    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_ZPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data, 2) != HAL_OK)
     {
         status = HAL_ERROR;
     }
@@ -275,7 +275,7 @@ HAL_StatusTypeDef AS5600_SetStopPosition(AS5600_TypeDef *const a, const uint16_t
     uint8_t data[2] = {0};
     data[0] = (uint8_t)((pos & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)pos;
-    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
+    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MPOS_HIGH, I2C_MEMADD_SIZE_8BIT, data, 2) != HAL_OK)
     {
         status = HAL_ERROR;
     }
@@ -289,7 +289,7 @@ HAL_StatusTypeDef AS5600_SetMaxAngle(AS5600_TypeDef *const a, const uint16_t ang
     uint8_t data[2] = {0};
     data[0] = (uint8_t)((angle & AS5600_12_BIT_MASK) >> 8); /* Zero out upper four bits of argument and shift out lower four bits */
     data[1] = (uint8_t)angle;
-    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MANG_HIGH, I2C_MEMADD_SIZE_8BIT, data[0], 2) != HAL_OK)
+    if (HAL_I2C_Mem_Write_IT(a->i2cHandle, a->i2cAddr, AS5600_REGISTER_MANG_HIGH, I2C_MEMADD_SIZE_8BIT, data, 2) != HAL_OK)
     {
         status = HAL_ERROR;
     }
