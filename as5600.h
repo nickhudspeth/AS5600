@@ -12,10 +12,10 @@ DESCRIPTION:
 
 USAGE:
 	// Instantiate an AS5600 structure
-	AS5600_TypeDef *a;
+	AS5600_TypeDef *a = AS5600_New();
 
     // Configure non-default options, if required.
-    a->PositiveRotationDirection = AS5600_DIR_CCW
+    a->PositiveRotationDirection = AS5600_DIR_CCW;
 	a->LowPowerMode = AS5600_POWER_MODE_LPM2;
     a->OutputStage = AS5600_OUTPUT_STAGE_PWM;
     a->PWMFrequency = AS5600_PWM_FREQUENCY_460HZ;
@@ -159,6 +159,8 @@ typedef struct
 
 } AS5600_TypeDef;
 /***********************    FUNCTION PROTOTYPES    ***********************/
+
+AS5600_TypeDef * AS5600_New(void);
 HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a);
 
 HAL_StatusTypeDef AS5600_SetStartPosition(AS5600_TypeDef *const a, const uint16_t pos);

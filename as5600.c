@@ -36,6 +36,11 @@ LICENSE:
 /**********************    GLOBAL VARIABLES    ***********************/
 
 /*******************    FUNCTION IMPLEMENTATIONS    ********************/
+AS5600_TypeDef * AS5600_New(void){
+    AS5600_TypeDef *a = (AS5600_TypeDef *)calloc(1, sizeof(AS5600_TypeDef));
+    return a;
+}
+
 HAL_StatusTypeDef AS5600_Init(AS5600_TypeDef *a)
 {
     HAL_StatusTypeDef status = HAL_OK;
