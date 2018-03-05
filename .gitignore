@@ -56,3 +56,7 @@ dkms.conf
 .settings/
 .vscode/
 .project
+
+# Folders
+HAL_Driver/
+CMSIS/
